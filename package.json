@@ -1,7 +1,28 @@
 {
   "name": "reactron",
+  "description": "<your project description>",
+  "author": "Kamil Chowaniec",
   "version": "0.1.0",
+  "build": {
+    "appId": "com.kamilchowaniec.reactron"
+  },
+  "main": "public/electron.js",
+  "homepage": "./",
+  "noImplicitAny": false,
   "private": true,
+  "scripts": {
+    "react-start": "react-scripts start --inspect-brk=9223",
+    "react-start-only": "react-scripts start",
+    "react-server": "cross-env BROWSER=none npm run react-start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "electron": " electron . --remote-debugging-port=9223",
+    "release": "npm run react-build && electron-builder --publish=always",
+    "build": "npm run react-build && tsc -p ./src/ElectronComponents/tsconfig.json",
+    "build-electron": "tsc -p ./src/ElectronComponents/tsconfig.json"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -10,16 +31,19 @@
     "@types/node": "^12.12.34",
     "@types/react": "^16.9.29",
     "@types/react-dom": "^16.9.5",
+    "bootstrap": "^4.4.1",
+    "cross-env": "^7.0.2",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-is-dev": "^1.1.0",
+    "electron-log": "^4.1.1",
+    "electron-updater": "^4.2.5",
+    "node-opcua": "^2.5.4",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "typescript": "^3.7.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +59,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1"
   }
 }

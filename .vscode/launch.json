@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "react server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "react-server"
+            ],
+            "port": 9223,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "attach",
+            "name": "react",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}",
+            "port": 9223,
+            "timeout": 20000
+        },
+        {
+            "name": "Electron: Main",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "args": [
+                ".",
+                "--remote-debugging-port=9223"
+            ],
+            "outputCapture": "std"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": [
+                "react server",
+                "Electron: Main",
+                "react"
+            ]
+        }
+    ]
+}

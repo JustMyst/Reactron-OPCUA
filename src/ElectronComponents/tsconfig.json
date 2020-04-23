@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "sourceMap": true,
+        "module": "ES6",
+        "experimentalDecorators": true,
+        "declaration": true,
+        "declarationDir": "d",
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictFunctionTypes": true,
+        "keyofStringsOnly": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false,
+        "strictPropertyInitialization": false,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+    },
+    "include": [
+        "../../public",
+        "OPC UA",
+        "*.ts"
+    ],
+    "exclude": [
+        "../../node_modules",
+        "d"
+    ]
+}

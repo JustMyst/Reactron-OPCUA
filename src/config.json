@@ -1,0 +1,40 @@
+{
+    "opcuaClient": {
+        "connectionStrategy": {
+            "initialDelay": 2000,
+            "maxRetry": 3
+        },
+        "endpointUrl": "opc.tcp://opcuademo.sterfive.com:26543",
+        "tags": [
+            {
+                "nodeId": "ns=3;s=Scalar_Simulation_Double",
+                "dataType": "double"
+            },
+            {
+                "nodeId": "ns=3;s=Scalar_Simulation_String",
+                "dataType": "string"
+            }
+        ]
+    },
+    "opcuaServer": {
+        "port": 4433,
+        "tags": [
+            {
+                "nodeId": "ns=3;s=Scalar_Simulation_Double",
+                "dataType": "double",
+                "type": "manual",
+                "value": "4.1"
+            }
+        ]
+    },
+    "display": {
+        "kioskMode": true,
+        "width": 1280,
+        "height": 960
+    },
+    "autoUpdater": {
+        "updateServerUrl": "http://localhost:8080",
+        "installAction": "prompt",
+        "frequencyH": 1
+    }
+}
