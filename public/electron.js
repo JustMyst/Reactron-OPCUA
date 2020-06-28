@@ -1,25 +1,31 @@
-import { app, BrowserWindow, Menu } from "electron";
-import * as path from "path";
-import * as fs from "fs";
-import * as isDev from "electron-is-dev";
-import { config } from "../src/ElectronComponents/Config";
-import { Updater } from "../src/ElectronComponents/AutoUpdater";
-import { initCommunication } from "../src/ElectronComponents/Message";
-// Keep a global reference of the window object, if you don"t, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-export let mainWindow, configWindow, autoUpdater;
-export const webviews = [];
-export const initPath = path.join(app.getPath("userData"), "init.json");
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
+const path = __importStar(require("path"));
+const fs = __importStar(require("fs"));
+const isDev = __importStar(require("electron-is-dev"));
+const Config_1 = require("../src/ElectronComponents/Config");
+const AutoUpdater_1 = require("../src/ElectronComponents/AutoUpdater");
+const Message_1 = require("../src/ElectronComponents/Message");
+exports.webviews = [];
+exports.initPath = path.join(electron_1.app.getPath("userData"), "init.json");
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.on("ready", async () => {
+electron_1.app.on("ready", async () => {
     if (process.platform === "win32") {
-        app.setAppUserModelId("com.kamilchowaniec.reactron");
+        electron_1.app.setAppUserModelId("com.kamilchowaniec.reactron");
     }
-    mainWindow = new BrowserWindow({
+    exports.mainWindow = new electron_1.BrowserWindow({
         show: false,
-        width: config.display.width,
-        height: config.display.height,
+        width: Config_1.config.display.width,
+        height: Config_1.config.display.height,
         minWidth: 900,
         minHeight: 600,
         icon: "./favicon.ico",
@@ -29,33 +35,32 @@ app.on("ready", async () => {
             webviewTag: true
         }
     });
-    mainWindow.setTitle("reactron");
+    exports.mainWindow.setTitle("reactron");
     createMenu();
     // Load latest window location
     loadWindowLocation();
     // Load Main HTML file
-    mainWindow.loadURL(isDev
+    exports.mainWindow.loadURL(isDev
         ? "http://localhost:3000"
         : `file://${path.join(__dirname, "../build/index.html")}`);
-    mainWindow.once("ready-to-show", async () => {
-        var _a;
+    exports.mainWindow.once("ready-to-show", async () => {
         // Show window when loaded
-        mainWindow.show();
-        initCommunication();
+        exports.mainWindow.show();
+        Message_1.initCommunication();
         // Initiate AutoUpdater if config has required data
-        if ((_a = config.autoUpdater) === null || _a === void 0 ? void 0 : _a.updateServerUrl)
-            autoUpdater = new Updater();
+        if (Config_1.config.autoUpdater?.updateServerUrl)
+            exports.autoUpdater = new AutoUpdater_1.Updater();
     });
 });
 // Quit when all windows are closed.
-app.on("window-all-closed", () => {
+electron_1.app.on("window-all-closed", () => {
     saveWindowLocation();
-    app.quit();
+    electron_1.app.quit();
 });
 process.on("uncaughtException", (err) => {
 });
-export function openConfig() {
-    configWindow = new BrowserWindow({
+function openConfig() {
+    exports.configWindow = new electron_1.BrowserWindow({
         show: false,
         width: 300,
         height: 400,
@@ -68,17 +73,18 @@ export function openConfig() {
             webviewTag: true
         }
     });
-    configWindow.loadURL(isDev
+    exports.configWindow.loadURL(isDev
         ? "http://localhost:3000/#/config"
         : `file://${path.join(__dirname, "../build/index.html/#/config")}`);
-    configWindow.removeMenu();
-    configWindow.once("ready-to-show", async () => {
+    exports.configWindow.removeMenu();
+    exports.configWindow.once("ready-to-show", async () => {
         // Show window when loaded
-        configWindow.show();
+        exports.configWindow.show();
     });
 }
+exports.openConfig = openConfig;
 function createMenu() {
-    const menu = Menu.buildFromTemplate([
+    const menu = electron_1.Menu.buildFromTemplate([
         {
             label: 'Menu',
             submenu: [
@@ -87,7 +93,7 @@ function createMenu() {
                 {
                     label: 'Exit',
                     click() {
-                        app.quit();
+                        electron_1.app.quit();
                     }
                 }
             ]
@@ -112,7 +118,7 @@ function createMenu() {
                 {
                     label: 'Exit',
                     click() {
-                        app.quit();
+                        electron_1.app.quit();
                     }
                 }
             ]
@@ -122,14 +128,14 @@ function createMenu() {
 }
 // Save and load application's window location on screen
 function saveWindowLocation() {
-    const data = { bounds: mainWindow.getContentBounds() };
-    fs.writeFileSync(initPath, JSON.stringify(data));
+    const data = { bounds: exports.mainWindow.getContentBounds() };
+    fs.writeFileSync(exports.initPath, JSON.stringify(data));
 }
 function loadWindowLocation() {
     try {
-        const data = JSON.parse(fs.readFileSync(initPath, "utf8"));
+        const data = JSON.parse(fs.readFileSync(exports.initPath, "utf8"));
         if (data.bounds)
-            mainWindow.setBounds(data.bounds);
+            exports.mainWindow.setBounds(data.bounds);
     }
     catch (e) {
         console.error("Latest User Data not found");

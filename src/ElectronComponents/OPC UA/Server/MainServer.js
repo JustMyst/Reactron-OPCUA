@@ -1,9 +1,11 @@
-import { OPCUAServer, Variant, DataType, StatusCodes } from "node-opcua";
-import { config } from "../../Config";
-import { OpcuaHelper } from "../OpcuaHelper";
-export var OpcuaServer;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const node_opcua_1 = require("node-opcua");
+const Config_1 = require("../../Config");
+const OpcuaHelper_1 = require("../OpcuaHelper");
+var OpcuaServer;
 (function (OpcuaServer) {
-    const server = new OPCUAServer({
+    const server = new node_opcua_1.OPCUAServer({
         port: 4334,
         resourcePath: "/UA/MyLittleServer",
         buildInfo: {
@@ -34,7 +36,7 @@ export var OpcuaServer;
             dataType: "Double",
             value: {
                 get: function () {
-                    return new Variant({ dataType: DataType.Double, value: variable1 });
+                    return new node_opcua_1.Variant({ dataType: node_opcua_1.DataType.Double, value: variable1 });
                 }
             }
         });
@@ -47,11 +49,11 @@ export var OpcuaServer;
             dataType: "Double",
             value: {
                 get: function () {
-                    return new Variant({ dataType: DataType.Double, value: variable2 });
+                    return new node_opcua_1.Variant({ dataType: node_opcua_1.DataType.Double, value: variable2 });
                 },
                 set: function (variant) {
                     variable2 = parseFloat(variant.value);
-                    return StatusCodes.Good;
+                    return node_opcua_1.StatusCodes.Good;
                 }
             }
         });
@@ -61,10 +63,10 @@ export var OpcuaServer;
             browseName: "FreeMemory",
             dataType: "Double",
             value: {
-                get: function () { return new Variant({ dataType: DataType.Double, value: available_memory() }); }
+                get: function () { return new node_opcua_1.Variant({ dataType: node_opcua_1.DataType.Double, value: available_memory() }); }
             }
         });
-        for (const tag of config.opcuaServer.tags)
+        for (const tag of Config_1.config.opcuaServer.tags)
             namespace.addVariable({
                 componentOf: device,
                 nodeId: tag.nodeId,
@@ -72,14 +74,14 @@ export var OpcuaServer;
                 dataType: tag.dataType,
                 value: {
                     get: () => {
-                        return new Variant({
-                            dataType: OpcuaHelper.typeMap[tag.dataType],
+                        return new node_opcua_1.Variant({
+                            dataType: OpcuaHelper_1.OpcuaHelper.typeMap[tag.dataType],
                             value: tag.value || 0
                         });
                     },
                     set: tag.type === "manual" ? (variant) => {
                         tag.value = variant.value;
-                        return StatusCodes.Good;
+                        return node_opcua_1.StatusCodes.Good;
                     } : undefined
                 }
             });
@@ -105,10 +107,10 @@ export var OpcuaServer;
     }
     OpcuaServer.stopServer = stopServer;
     function updateNodeValue(nodeId, value) {
-        const updatedTag = config.opcuaServer.tags.find(e => e.nodeId === nodeId);
+        const updatedTag = Config_1.config.opcuaServer.tags.find(e => e.nodeId === nodeId);
         if (updatedTag)
             updatedTag.value = value;
     }
     OpcuaServer.updateNodeValue = updateNodeValue;
-})(OpcuaServer || (OpcuaServer = {}));
+})(OpcuaServer = exports.OpcuaServer || (exports.OpcuaServer = {}));
 //# sourceMappingURL=MainServer.js.map

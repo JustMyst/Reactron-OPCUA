@@ -1,20 +1,29 @@
-import { OPCUAClient, MessageSecurityMode, SecurityPolicy, AttributeIds, ClientSubscription, TimestampsToReturn, ClientMonitoredItem } from "node-opcua";
-import { config } from "../../Config";
-import { showNotification } from "../../Message";
-import * as log from "electron-log";
-import { mainWindow } from "../../../../public/electron";
-import { OpcuaHelper } from "../OpcuaHelper";
-export var OpcuaClient;
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const node_opcua_1 = require("node-opcua");
+const Config_1 = require("../../Config");
+const Message_1 = require("../../Message");
+const log = __importStar(require("electron-log"));
+const electron_1 = require("../../../../public/electron");
+const OpcuaHelper_1 = require("../OpcuaHelper");
+var OpcuaClient;
 (function (OpcuaClient) {
     const options = {
         applicationName: "MyClient",
-        connectionStrategy: config.opcuaClient.connectionStrategy,
-        securityMode: MessageSecurityMode.None,
-        securityPolicy: SecurityPolicy.None,
+        connectionStrategy: Config_1.config.opcuaClient.connectionStrategy,
+        securityMode: node_opcua_1.MessageSecurityMode.None,
+        securityPolicy: node_opcua_1.SecurityPolicy.None,
         endpoint_must_exist: false,
-    }, client = OPCUAClient.create(options), endpointUrl = config.opcuaClient.endpointUrl, tags = [], subscriptions = [];
+    }, client = node_opcua_1.OPCUAClient.create(options), endpointUrl = Config_1.config.opcuaClient.endpointUrl, tags = [], subscriptions = [];
     let session;
-    for (const tag of config.opcuaClient.tags) {
+    for (const tag of Config_1.config.opcuaClient.tags) {
         tags.push({
             nodeId: tag.nodeId,
             dataType: tag.dataType,
@@ -42,17 +51,17 @@ export var OpcuaClient;
             // step 2 : createSession
             session = await client.createSession();
             console.log("session created!");
-            mainWindow.webContents.send("client-status", { connected: true });
-            mainWindow.webContents.send("tags", { tags });
+            electron_1.mainWindow.webContents.send("client-status", { connected: true });
+            electron_1.mainWindow.webContents.send("tags", { tags });
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
     OpcuaClient.connect = connect;
     function connected() {
-        showNotification("info", "OPC-UA Client", `Connected to OPC UA Server.`);
+        Message_1.showNotification("info", "OPC-UA Client", `Connected to OPC UA Server.`);
     }
     async function disconnect() {
         try {
@@ -62,13 +71,13 @@ export var OpcuaClient;
             console.log("Disconnected!");
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
     OpcuaClient.disconnect = disconnect;
     function disconnected(isReconnecting) {
-        showNotification("info", "OPC-UA Client", `OPC UA Server disconnected.${isReconnecting ? "\n Trying to reconnect." : ""}`);
+        Message_1.showNotification("info", "OPC-UA Client", `OPC UA Server disconnected.${isReconnecting ? "\n Trying to reconnect." : ""}`);
     }
     async function readNodeValue(nodeId) {
         try {
@@ -78,13 +87,13 @@ export var OpcuaClient;
             const maxAge = 0;
             const nodeToRead = {
                 nodeId,
-                attributeId: AttributeIds.Value
+                attributeId: node_opcua_1.AttributeIds.Value
             };
             nodeToUpdate.value = (await session.read(nodeToRead, maxAge)).value.value.toString();
             refreshTags();
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
@@ -96,10 +105,10 @@ export var OpcuaClient;
                 throw new Error("Tag not found.");
             const nodeToWrite = {
                 nodeId,
-                attributeId: AttributeIds.Value,
+                attributeId: node_opcua_1.AttributeIds.Value,
                 value: {
                     value: {
-                        dataType: OpcuaHelper.typeMap[nodeToUpdate.dataType],
+                        dataType: OpcuaHelper_1.OpcuaHelper.typeMap[nodeToUpdate.dataType],
                         value
                     }
                 }
@@ -109,7 +118,7 @@ export var OpcuaClient;
             refreshTags();
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
@@ -121,17 +130,17 @@ export var OpcuaClient;
             refreshTags();
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
     OpcuaClient.refreshNodes = refreshNodes;
     function refreshTags() {
-        mainWindow.webContents.send("tag-refresh", { tags });
+        electron_1.mainWindow.webContents.send("tag-refresh", { tags });
     }
     async function subscribe(nodeId) {
         try {
-            const subscription = ClientSubscription.create(session, {
+            const subscription = node_opcua_1.ClientSubscription.create(session, {
                 requestedPublishingInterval: 1000,
                 requestedLifetimeCount: 100,
                 requestedMaxKeepAliveCount: 10,
@@ -149,12 +158,12 @@ export var OpcuaClient;
             // install monitored item
             const itemToMonitor = {
                 nodeId,
-                attributeId: AttributeIds.Value
+                attributeId: node_opcua_1.AttributeIds.Value
             }, parameters = {
                 samplingInterval: 100,
                 discardOldest: true,
                 queueSize: 10
-            }, monitoredItem = ClientMonitoredItem.create(subscription, itemToMonitor, parameters, TimestampsToReturn.Both);
+            }, monitoredItem = node_opcua_1.ClientMonitoredItem.create(subscription, itemToMonitor, parameters, node_opcua_1.TimestampsToReturn.Both);
             subscriptions.push(subscription);
             monitoredItem.on("changed", (dataValue) => {
                 const tag = tags.find(e => e.nodeId == monitoredItem.monitoredItemId);
@@ -165,7 +174,7 @@ export var OpcuaClient;
             });
         }
         catch (err) {
-            showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
+            Message_1.showNotification("error", "OPC-UA Client", `An error has occured:\n${err}`);
             console.log("An error has occured : ", err);
         }
     }
@@ -177,5 +186,5 @@ export var OpcuaClient;
             await subscription.terminate();
     }
     OpcuaClient.unsibscribe = unsibscribe;
-})(OpcuaClient || (OpcuaClient = {}));
+})(OpcuaClient = exports.OpcuaClient || (exports.OpcuaClient = {}));
 //# sourceMappingURL=MainClient.js.map

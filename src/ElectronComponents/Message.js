@@ -1,61 +1,73 @@
-import { ipcMain } from "electron";
-import { mainWindow, openConfig } from "../../public/electron";
-import * as log from "electron-log";
-import { OpcuaClient } from "./OPC UA/Client/MainClient";
-import { OpcuaServer } from "./OPC UA/Server/MainServer";
-import { config, setConfig } from "./Config";
-import * as fs from "fs";
-export function initCommunication() {
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
+const electron_2 = require("../../public/electron");
+const log = __importStar(require("electron-log"));
+const MainClient_1 = require("./OPC UA/Client/MainClient");
+const MainServer_1 = require("./OPC UA/Server/MainServer");
+const Config_1 = require("./Config");
+const fs = __importStar(require("fs"));
+function initCommunication() {
     // Server Side
-    ipcMain.on("set-nodes", (ev, data) => {
-        config.opcuaServer.tags = data.tags;
+    electron_1.ipcMain.on("set-nodes", (ev, data) => {
+        Config_1.config.opcuaServer.tags = data.tags;
         saveConfig();
     });
-    ipcMain.on("update-node-value", (ev, data) => {
-        OpcuaServer.updateNodeValue(data.nodeId, data.value);
+    electron_1.ipcMain.on("update-node-value", (ev, data) => {
+        MainServer_1.OpcuaServer.updateNodeValue(data.nodeId, data.value);
     });
-    ipcMain.on("run-server", (ev, data) => {
-        OpcuaServer.startServer();
+    electron_1.ipcMain.on("run-server", (ev, data) => {
+        MainServer_1.OpcuaServer.startServer();
     });
-    ipcMain.on("close-server", (ev, data) => {
-        OpcuaServer.stopServer();
+    electron_1.ipcMain.on("close-server", (ev, data) => {
+        MainServer_1.OpcuaServer.stopServer();
     });
     // Cient Side
-    ipcMain.on("write-node", (ev, data) => {
-        OpcuaClient.writeNodeValue(data.nodeId, data.value);
+    electron_1.ipcMain.on("write-node", (ev, data) => {
+        MainClient_1.OpcuaClient.writeNodeValue(data.nodeId, data.value);
     });
-    ipcMain.on("read-node", (ev, data) => {
-        OpcuaClient.readNodeValue(data.nodeId);
+    electron_1.ipcMain.on("read-node", (ev, data) => {
+        MainClient_1.OpcuaClient.readNodeValue(data.nodeId);
     });
-    ipcMain.on("refresh-nodes", (ev, data) => {
-        OpcuaClient.refreshNodes();
+    electron_1.ipcMain.on("refresh-nodes", (ev, data) => {
+        MainClient_1.OpcuaClient.refreshNodes();
     });
-    ipcMain.on("subscribe-node", (ev, data) => {
-        OpcuaClient.subscribe(data.nodeId);
+    electron_1.ipcMain.on("subscribe-node", (ev, data) => {
+        MainClient_1.OpcuaClient.subscribe(data.nodeId);
     });
-    ipcMain.on("unsunscribe-node", (ev, data) => {
-        OpcuaClient.unsibscribe(data.nodeId);
+    electron_1.ipcMain.on("unsunscribe-node", (ev, data) => {
+        MainClient_1.OpcuaClient.unsibscribe(data.nodeId);
     });
-    ipcMain.on("connect-to-server", (ev, data) => {
-        OpcuaClient.connect();
+    electron_1.ipcMain.on("connect-to-server", (ev, data) => {
+        MainClient_1.OpcuaClient.connect();
     });
-    ipcMain.on("disconnect-from-server", (ev, data) => {
-        OpcuaClient.disconnect();
+    electron_1.ipcMain.on("disconnect-from-server", (ev, data) => {
+        MainClient_1.OpcuaClient.disconnect();
     });
-    ipcMain.on("open-config", (ev, data) => {
-        openConfig();
+    electron_1.ipcMain.on("open-config", (ev, data) => {
+        electron_2.openConfig();
     });
-    ipcMain.on("save-config", (ev, data) => {
-        setConfig(data.config);
+    electron_1.ipcMain.on("save-config", (ev, data) => {
+        Config_1.setConfig(data.config);
         saveConfig();
     });
 }
+exports.initCommunication = initCommunication;
 ;
-export function saveConfig() {
-    fs.writeFile(`../config.json`, JSON.stringify(config), (er) => { var _a; throw new Error("Could not save config file.\n" + ((_a = er) === null || _a === void 0 ? void 0 : _a.message)); });
+function saveConfig() {
+    fs.writeFile(`../config.json`, JSON.stringify(Config_1.config), (er) => { throw new Error("Could not save config file.\n" + er?.message); });
 }
-export function showNotification(type, title, body, timeoutS = 10) {
-    mainWindow.webContents.send("notification", { type, title, body, timeoutS });
+exports.saveConfig = saveConfig;
+function showNotification(type, title, body, timeoutS = 10) {
+    electron_2.mainWindow.webContents.send("notification", { type, title, body, timeoutS });
     type === "info" ? log.info(body) : log.error(body);
 }
+exports.showNotification = showNotification;
 //# sourceMappingURL=Message.js.map

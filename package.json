@@ -10,6 +10,7 @@
   "homepage": "./",
   "noImplicitAny": false,
   "private": true,
+  "type": "module",
   "scripts": {
     "react-start": "react-scripts start --inspect-brk=9223",
     "react-start-only": "react-scripts start",
