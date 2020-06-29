@@ -7,8 +7,8 @@ import { TOpcuaTag, OpcuaHelper } from "../OpcuaHelper";
 
 export namespace OpcuaServer {
     const server = new OPCUAServer({
-        port: 4334, // the port of the listening socket of the server
-        resourcePath: "/UA/MyLittleServer", // this path will be added to the endpoint resource name
+        port: config.opcuaServer.port, // the port of the listening socket of the server
+        resourcePath: "/UA/MyServer", // this path will be added to the endpoint resource name
         buildInfo: {
             productName: "MySampleServer1",
             buildNumber: "7658",

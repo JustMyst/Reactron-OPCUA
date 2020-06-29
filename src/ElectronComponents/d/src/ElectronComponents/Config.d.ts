@@ -1,7 +1,7 @@
 export declare let config: IConfig;
 export interface IConfig extends IAutoUpdaterConfig, IDisplayConfig, IOpcuaClientConfig, IOpcuaServerConfig {
 }
-export declare type TDataTypes = "string" | "double" | "float" | "integer" | "datetime" | "boolean" | "byte";
+export declare type TDataTypes = "String" | "Double" | "Float" | "Integer" | "Datetime" | "Boolean" | "Byte";
 export declare type TNodeTypes = "manual" | "random" | "incremental";
 export declare type TInstallAction = "prompt" | "onExit";
 export declare function setConfig(newConfig: IConfig): void;

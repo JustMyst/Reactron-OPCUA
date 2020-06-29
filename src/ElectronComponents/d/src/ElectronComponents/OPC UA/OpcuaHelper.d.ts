@@ -6,12 +6,12 @@ export declare type TOpcuaTag = {
 };
 export declare class OpcuaHelper {
     static typeMap: {
-        "string": DataType;
-        "double": DataType;
-        "float": DataType;
-        "integer": DataType;
-        "datetime": DataType;
-        "boolean": DataType;
-        "byte": DataType;
+        "String": DataType;
+        "Double": DataType;
+        "Float": DataType;
+        "Integer": DataType;
+        "Datetime": DataType;
+        "Boolean": DataType;
+        "Byte": DataType;
     };
 }

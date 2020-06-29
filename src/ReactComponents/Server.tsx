@@ -81,7 +81,7 @@ export class Server extends React.Component<{}, { tags: IServerTag[] }> {
     }
 
     toggleServer() {
-        ipcRenderer.send(this._isRunning ? "stop-server" : "start-server");
+        ipcRenderer.send(this._isRunning ? "close-server" : "run-server");
         this._isRunning = !this._isRunning;
         this.forceUpdate();
     }
@@ -93,7 +93,7 @@ export class Server extends React.Component<{}, { tags: IServerTag[] }> {
     addNode() {
         this._tags.push({
             nodeId: "",
-            dataType: "string",
+            dataType: "String",
             value: "",
             type: "manual"
         });

@@ -5,12 +5,12 @@ class OpcuaHelper {
 }
 exports.OpcuaHelper = OpcuaHelper;
 OpcuaHelper.typeMap = {
-    "string": node_opcua_1.DataType.String,
-    "double": node_opcua_1.DataType.Double,
-    "float": node_opcua_1.DataType.Float,
-    "integer": node_opcua_1.DataType.UInt16,
-    "datetime": node_opcua_1.DataType.DateTime,
-    "boolean": node_opcua_1.DataType.Boolean,
-    "byte": node_opcua_1.DataType.Byte
+    "String": node_opcua_1.DataType.String,
+    "Double": node_opcua_1.DataType.Double,
+    "Float": node_opcua_1.DataType.Float,
+    "Integer": node_opcua_1.DataType.UInt16,
+    "Datetime": node_opcua_1.DataType.DateTime,
+    "Boolean": node_opcua_1.DataType.Boolean,
+    "Byte": node_opcua_1.DataType.Byte
 };
 //# sourceMappingURL=OpcuaHelper.js.map

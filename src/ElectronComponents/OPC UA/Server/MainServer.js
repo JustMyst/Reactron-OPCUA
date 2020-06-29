@@ -6,8 +6,8 @@ const OpcuaHelper_1 = require("../OpcuaHelper");
 var OpcuaServer;
 (function (OpcuaServer) {
     const server = new node_opcua_1.OPCUAServer({
-        port: 4334,
-        resourcePath: "/UA/MyLittleServer",
+        port: Config_1.config.opcuaServer.port,
+        resourcePath: "/UA/MyServer",
         buildInfo: {
             productName: "MySampleServer1",
             buildNumber: "7658",

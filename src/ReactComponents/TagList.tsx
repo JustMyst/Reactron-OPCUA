@@ -17,8 +17,9 @@ export class TagList extends React.Component<{}, { tags: IClientTag[] }> {
 
         this._tags = this.state.tags;
 
-        ipcRenderer.on("tag-refresh", (ev, data) => {
+        ipcRenderer.on("tags", (ev, data) => {
             this._tags = data.tags;
+            this.forceUpdate();
         })
     }
 

@@ -153,7 +153,7 @@ export namespace OpcuaClient {
     }
 
     function refreshTags() {
-        mainWindow.webContents.send("tag-refresh", { tags });
+        mainWindow.webContents.send("tags", { tags });
     }
 
     export async function subscribe(nodeId: string) {

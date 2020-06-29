@@ -12,9 +12,6 @@ export class Updater {
         autoUpdater.logger = log;
         (<log.ElectronLog>autoUpdater.logger).transports.file.level = "info";
 
-        // versionPath must be a http:// address pointing published versions.
-        // Run "npm run dist" to generate version in /dist folder, 
-        // then run "npm run updaterServer" to start http-server on /dist folder.
         autoUpdater.setFeedURL(config.autoUpdater.updateServerUrl);
         autoUpdater.autoInstallOnAppQuit = true;
 

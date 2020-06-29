@@ -136,7 +136,7 @@ var OpcuaClient;
     }
     OpcuaClient.refreshNodes = refreshNodes;
     function refreshTags() {
-        electron_1.mainWindow.webContents.send("tag-refresh", { tags });
+        electron_1.mainWindow.webContents.send("tags", { tags });
     }
     async function subscribe(nodeId) {
         try {

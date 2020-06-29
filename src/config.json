@@ -4,15 +4,11 @@
             "initialDelay": 2000,
             "maxRetry": 3
         },
-        "endpointUrl": "opc.tcp://opcuademo.sterfive.com:26543",
+        "endpointUrl": "opc.tcp://PLKCHOWANIEC01:4433/UA/MyServer",
         "tags": [
             {
-                "nodeId": "ns=3;s=Scalar_Simulation_Double",
-                "dataType": "double"
-            },
-            {
-                "nodeId": "ns=3;s=Scalar_Simulation_String",
-                "dataType": "string"
+                "nodeId": "ns=1;s=Scalar_Simulation_Double",
+                "dataType": "Double"
             }
         ]
     },
@@ -20,15 +16,15 @@
         "port": 4433,
         "tags": [
             {
-                "nodeId": "ns=3;s=Scalar_Simulation_Double",
-                "dataType": "double",
+                "nodeId": "ns=1;s=Scalar_Simulation_Double",
+                "dataType": "Double",
                 "type": "manual",
                 "value": "4.1"
             }
         ]
     },
     "display": {
-        "kioskMode": true,
+        "kioskMode": false,
         "width": 1280,
         "height": 960
     },

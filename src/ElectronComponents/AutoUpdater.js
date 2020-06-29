@@ -18,9 +18,6 @@ class Updater {
         // Logging
         electron_updater_1.autoUpdater.logger = log;
         electron_updater_1.autoUpdater.logger.transports.file.level = "info";
-        // versionPath must be a http:// address pointing published versions.
-        // Run "npm run dist" to generate version in /dist folder, 
-        // then run "npm run updaterServer" to start http-server on /dist folder.
         electron_updater_1.autoUpdater.setFeedURL(Config_1.config.autoUpdater.updateServerUrl);
         electron_updater_1.autoUpdater.autoInstallOnAppQuit = true;
         this.attachEvents();

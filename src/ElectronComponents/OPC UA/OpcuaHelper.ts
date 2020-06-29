@@ -9,12 +9,12 @@ export type TOpcuaTag =
 
 export class OpcuaHelper {
     static typeMap = {
-        "string": DataType.String,
-        "double": DataType.Double,
-        "float": DataType.Float,
-        "integer": DataType.UInt16,
-        "datetime": DataType.DateTime,
-        "boolean": DataType.Boolean,
-        "byte": DataType.Byte
+        "String": DataType.String,
+        "Double": DataType.Double,
+        "Float": DataType.Float,
+        "Integer": DataType.UInt16,
+        "Datetime": DataType.DateTime,
+        "Boolean": DataType.Boolean,
+        "Byte": DataType.Byte
     }
 }

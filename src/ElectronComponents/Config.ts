@@ -4,7 +4,7 @@ export interface IConfig extends IAutoUpdaterConfig, IDisplayConfig, IOpcuaClien
 
 }
 
-export type TDataTypes = "string" | "double" | "float" | "integer" | "datetime" | "boolean" | "byte";
+export type TDataTypes = "String" | "Double" | "Float" | "Integer" | "Datetime" | "Boolean" | "Byte";
 export type TNodeTypes = "manual" | "random" | "incremental";
 export type TInstallAction = "prompt" | "onExit";
 

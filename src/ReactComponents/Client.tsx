@@ -42,11 +42,11 @@ export class Client extends React.Component {
         ipcRenderer.send("open-config");
     }
 
-    toggleServer() { // todo
+    toggleServer() {
         this.isConnected = !this.isConnected;
         this.forceUpdate();
         console.log(this.isConnected);
 
-        ipcRenderer.send("refresh-nodes");
+        this.isConnected ? ipcRenderer.send("connect-to-server") : ipcRenderer.send("disconnect-from-server");
     }
 }
